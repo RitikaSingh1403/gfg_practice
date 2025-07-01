@@ -2,7 +2,7 @@
 
 This repository contains my Java solutions to selected problems from [GeeksforGeeks](https://geeksforgeeks.com/), solved as part of my daily DSA practice.
 
-Each file is named based on the corresponding gfg question number for simplicity and fast access.
+Each file is named based on the corresponding gfg question name for simplicity and fast access.
 
 ## 📌 Purpose
 
