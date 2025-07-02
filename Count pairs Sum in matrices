@@ -1,0 +1,27 @@
+import java.util.HashSet;
+
+class Solution {
+    int countPairs(int[][] mat1, int[][] mat2, int x) {
+        HashSet<Integer> set = new HashSet<>();
+        int n = mat1.length;
+        int count = 0;
+
+        // Store x - mat1[i][j] in set
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                set.add(x - mat1[i][j]);
+            }
+        }
+
+        // Count how many mat2[i][j] exist in set
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (set.contains(mat2[i][j])) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+}
