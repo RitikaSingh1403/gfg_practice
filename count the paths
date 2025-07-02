@@ -1,0 +1,37 @@
+import java.util.*;
+
+class Solution {
+    public int countPaths(int[][] edges, int V, int src, int dest) {
+        // Build the adjacency list
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < V; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            adj.get(u).add(v);
+        }
+        
+        // Initialize dp array
+        int[] dp = new int[V];
+        Arrays.fill(dp, -1);
+        dp[dest] = 1; // Base case: one way to be at dest
+        
+        return dfs(src, dest, adj, dp);
+    }
+    
+    private int dfs(int node, int dest, List<List<Integer>> adj, int[] dp) {
+        if (dp[node] != -1) {
+            return dp[node];
+        }
+        
+        int count = 0;
+        for (int neighbor : adj.get(node)) {
+            count += dfs(neighbor, dest, adj, dp);
+        }
+        
+        dp[node] = count;
+        return count;
+    }
+}
