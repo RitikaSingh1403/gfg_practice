@@ -1,0 +1,47 @@
+import java.util.*;
+
+class Solution {
+    // Trie Node class
+    class TrieNode {
+        Map<Character, TrieNode> children = new HashMap<>();
+        boolean isEnd = false;
+        String word = null;
+    }
+
+    TrieNode root = new TrieNode();
+
+    // Insert word into Trie
+    private void insert(String word) {
+        TrieNode curr = root;
+        for (char ch : word.toCharArray()) {
+            curr.children.putIfAbsent(ch, new TrieNode());
+            curr = curr.children.get(ch);
+        }
+        curr.isEnd = true;
+        curr.word = word;
+    }
+
+    // DFS to find the longest word with all prefixes present
+    private String dfs(TrieNode node) {
+        String best = (node.word != null) ? node.word : "";
+
+        for (char ch : node.children.keySet()) {
+            TrieNode child = node.children.get(ch);
+            if (child.isEnd) {
+                String candidate = dfs(child);
+                if (candidate.length() > best.length() ||
+                   (candidate.length() == best.length() && candidate.compareTo(best) < 0)) {
+                    best = candidate;
+                }
+            }
+        }
+        return best;
+    }
+
+    public String longestString(String[] words) {
+        for (String word : words) {
+            insert(word);
+        }
+        return dfs(root);
+    }
+}
