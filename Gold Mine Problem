@@ -1,0 +1,45 @@
+class Solution {
+    public int maxGold(int[][] mat) {
+        if (mat == null || mat.length == 0 || mat[0].length == 0) {
+            return 0;
+        }
+        
+        int m = mat.length;
+        int n = mat[0].length;
+        
+        int[][] dp = new int[m][n];
+        
+        // Initialize the last column
+        for (int i = 0; i < m; i++) {
+            dp[i][n - 1] = mat[i][n - 1];
+        }
+        
+        // Fill the DP table from right to left
+        for (int j = n - 2; j >= 0; j--) {
+            for (int i = 0; i < m; i++) {
+                int maxNext = 0;
+                // Possible moves: up-right, right, down-right
+                if (i - 1 >= 0 && j + 1 < n) {
+                    maxNext = Math.max(maxNext, dp[i - 1][j + 1]);
+                }
+                if (j + 1 < n) {
+                    maxNext = Math.max(maxNext, dp[i][j + 1]);
+                }
+                if (i + 1 < m && j + 1 < n) {
+                    maxNext = Math.max(maxNext, dp[i + 1][j + 1]);
+                }
+                dp[i][j] = mat[i][j] + maxNext;
+            }
+        }
+        
+        // The answer is the maximum value in the first column
+        int maxGold = 0;
+        for (int i = 0; i < m; i++) {
+            if (dp[i][0] > maxGold) {
+                maxGold = dp[i][0];
+            }
+        }
+        
+        return maxGold;
+    }
+}
