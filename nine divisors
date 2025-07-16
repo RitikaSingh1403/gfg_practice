@@ -1,0 +1,64 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    public static int countNumbers(int n) {
+        if (n < 36) return 0; // The smallest number with exactly 9 divisors is 36 (2^2 * 3^2)
+        
+        int maxPrime = (int) Math.sqrt(n) + 1;
+        boolean[] isPrime = sieveOfEratosthenes(maxPrime);
+        List<Integer> primes = new ArrayList<>();
+        for (int i = 2; i <= maxPrime; i++) {
+            if (isPrime[i]) {
+                primes.add(i);
+            }
+        }
+        
+        int count = 0;
+        
+        // Case 1: p^8
+        for (int p : primes) {
+            long power = (long) Math.pow(p, 8);
+            if (power <= n) {
+                count++;
+            } else {
+                break;
+            }
+        }
+        
+        // Case 2: p^2 * q^2 where p < q
+        int primeCount = primes.size();
+        for (int i = 0; i < primeCount; i++) {
+            long p = primes.get(i);
+            long pSquared = p * p;
+            if (pSquared > n) break;
+            for (int j = i + 1; j < primeCount; j++) {
+                long q = primes.get(j);
+                long qSquared = q * q;
+                long product = pSquared * qSquared;
+                if (product <= n) {
+                    count++;
+                } else {
+                    break;
+                }
+            }
+        }
+        
+        return count;
+    }
+    
+    private static boolean[] sieveOfEratosthenes(int n) {
+        boolean[] isPrime = new boolean[n + 1];
+        for (int i = 2; i <= n; i++) {
+            isPrime[i] = true;
+        }
+        for (int p = 2; p * p <= n; p++) {
+            if (isPrime[p]) {
+                for (int i = p * p; i <= n; i += p) {
+                    isPrime[i] = false;
+                }
+            }
+        }
+        return isPrime;
+    }
+}
