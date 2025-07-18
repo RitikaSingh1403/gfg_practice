@@ -1,0 +1,37 @@
+class Solution {
+    int lcmTriplets(int n) {
+        if (n == 1) {
+            return 1;
+        }
+        if (n == 2) {
+            return 2;
+        }
+        if (n == 3) {
+            return 6;
+        }
+        if (n % 2 == 1) {
+            return n * (n - 1) * (n - 2);
+        } else {
+            int lcm1 = lcm(n, n - 1, n - 3);
+            int lcm2 = (n - 1) * (n - 2) * (n - 3);
+            return Math.max(lcm1, lcm2);
+        }
+    }
+    
+    private int gcd(int a, int b) {
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+    
+    private int lcm(int a, int b) {
+        return a * (b / gcd(a, b));
+    }
+    
+    private int lcm(int a, int b, int c) {
+        return lcm(lcm(a, b), c);
+    }
+}
