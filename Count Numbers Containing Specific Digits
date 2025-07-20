@@ -1,0 +1,33 @@
+import java.util.HashSet;
+import java.util.Set;
+
+class Solution {
+    public int countValid(int n, int[] arr) {
+        Set<Integer> digits = new HashSet<>();
+        for (int num : arr) {
+            digits.add(num);
+        }
+        
+        // Calculate total n-digit numbers
+        int totalNumbers = 9 * (int) Math.pow(10, n - 1);
+        
+        // Calculate numbers that do not contain any digit from arr
+        int firstDigitOptions = 0;
+        for (int i = 1; i <= 9; i++) {
+            if (!digits.contains(i)) {
+                firstDigitOptions++;
+            }
+        }
+        
+        int otherDigitOptions = 0;
+        for (int i = 0; i <= 9; i++) {
+            if (!digits.contains(i)) {
+                otherDigitOptions++;
+            }
+        }
+        
+        int invalidNumbers = firstDigitOptions * (int) Math.pow(otherDigitOptions, n - 1);
+        
+        return totalNumbers - invalidNumbers;
+    }
+}
